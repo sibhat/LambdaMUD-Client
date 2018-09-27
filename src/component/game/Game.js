@@ -25,7 +25,7 @@ class Game extends Component {
 	}
 	componentDidMount() {
 		let url = "https://sibhat-lambdamud.herokuapp.com";
-		url = "http://127.0.0.1:8800";
+		// url = "http://127.0.0.1:8800";
 
 		axios
 			.get(`${url}/api/adv/init/`, {
@@ -71,7 +71,7 @@ class Game extends Component {
 		let data;
 		if (Number(e.charCode) === 13) {
 			let url = "https://sibhat-lambdamud.herokuapp.com";
-			url = "http://127.0.0.1:8800";
+			// url = "http://127.0.0.1:8800";
 			if (comand.length === 1) {
 				url += "/api/adv/move/";
 				data = { direction: comand };
@@ -81,7 +81,7 @@ class Game extends Component {
 				comand.shift();
 				comand = comand.join(" ");
 				data = { message: comand };
-				console.log(comand);
+				// console.log(comand);
 			} else if (comand.split(" ")[0].toLowerCase() === "shout") {
 				url += "/api/adv/shout/";
 				comand = comand.split(" ");

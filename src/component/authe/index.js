@@ -20,7 +20,7 @@ class index extends Component {
 	handleSubmit = method => {
 		let { username, email, password1, password2 } = this.state;
 		let url = "https://sibhat-lambdamud.herokuapp.com";
-		url = "http://localhost:8800";
+		// url = "http://localhost:8800";
 		this.setState({ dispatch: true });
 		let data =
 			method == "registration"
@@ -39,7 +39,7 @@ class index extends Component {
 			.then(response => {
 				localStorage.setItem("isLogedin", 1);
 				localStorage.setItem("key", response.data.key);
-				console.log(response.data);
+				// console.log(response.data);
 				this.props.history.push("/game");
 				this.setState({ dispatch: false, errormsg: null });
 			})
