@@ -49,6 +49,13 @@
 	bottom: 0;
 	width: 100%;
 }
+.game__map {
+	background-color: rgba(255, 255, 255, 0.86);
+	position: absolute;
+	z-index: 100;
+	width: 100vw;
+	height: 100vh;
+}
 .game__input,
 .game__input:focus,
 .game__input:active {
@@ -99,4 +106,13 @@
 	border-radius: 10px;
 	text-decoration: none;
 	color: rgb(68, 68, 68);
+}
+.landing__room {
+	background-color: rgb(17, 138, 146);
+	padding: 20px;
+	border-radius: 10px;
+	color: black;
+	display: inline-block;
+	margin: 10px;
+	position: absolute;
 }
