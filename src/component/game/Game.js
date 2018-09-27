@@ -46,7 +46,7 @@ class Game extends Component {
 				channel.bind("broadcast", data => {
 					let message = this.state.message;
 					message.push(data);
-					// console.log(message);
+					console.log(message);
 					this.setState({
 						message
 					});
@@ -81,7 +81,6 @@ class Game extends Component {
 				comand.shift();
 				comand = comand.join(" ");
 				data = { message: comand };
-				// console.log(comand);
 			} else if (comand.split(" ")[0].toLowerCase() === "shout") {
 				url += "/api/adv/shout/";
 				comand = comand.split(" ");
@@ -93,7 +92,7 @@ class Game extends Component {
 				comand = comand.split(" ");
 				comand.shift();
 				comand = comand.join(" ");
-				data = { message: comand, to: "testuser3" };
+				data = { message: comand, to: "thursday1" };
 			}
 			axios
 				.post(`${url}`, data, {
