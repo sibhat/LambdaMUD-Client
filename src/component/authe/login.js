@@ -4,7 +4,7 @@ import "./login.css";
 
 const Loging = props => {
 	let { header, login, inputHandler, handleSubmit } = props;
-	let { email, password, username, dispatch } = props.data;
+	let { email, password, username, dispatch, errormsg } = props.data;
 	return (
 		<div className="login">
 			<div className="login__header">
@@ -16,6 +16,7 @@ const Loging = props => {
 					{login ? "Register" : "Login"}
 				</Link>
 			</div>
+			<span className="login__error">{errormsg}</span>
 			<form
 				className="login__body"
 				onSubmit={e => {

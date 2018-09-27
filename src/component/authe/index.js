@@ -9,7 +9,8 @@ class index extends Component {
 			email: "",
 			password: "",
 			username: "",
-			dispatch: false
+			dispatch: false,
+			errormsg: null
 		};
 	}
 	inputHandler = e => {
@@ -31,11 +32,14 @@ class index extends Component {
 				localStorage.setItem("key", response.data.key);
 				console.log(response.data);
 				this.props.history.push("/game");
-				this.setState({ dispatch: false });
+				this.setState({ dispatch: false, errormsg: null });
 			})
 			.catch(error => {
 				console.log({ error });
-				this.setState({ dispatch: false });
+				this.setState({
+					dispatch: false,
+					errormsg: error.response.data.error
+				});
 				// this.props.history.push("/auth/");
 			});
 		this.setState({ username: "", email: "", password: "" });
