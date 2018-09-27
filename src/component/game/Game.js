@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Messages from "./Messages";
+import Map from "./Map";
 import Spiner from "../layout/Spiner";
 import "./game.css";
 import ReactTooltip from "react-tooltip";
@@ -17,10 +18,7 @@ class Game extends Component {
 			command: "",
 			error_msg: null,
 			message: [],
-			dispatch: true,
-			messageIsOpen: false,
-			rooms: [],
-			mapIsOpen: false
+			dispatch: true
 		};
 	}
 	componentDidMount() {
@@ -35,21 +33,11 @@ class Game extends Component {
 			})
 			.then(response => {
 				let state = response.data;
-				console.log(state);
 				this.setState({ ...state, dispatch: false });
 			})
 			.catch(error => {
 				console.log({ error });
 				this.setState({ dispatch: false });
-			});
-		axios
-			.get(`${url}/api/adv/rooms`)
-			.then(response => {
-				console.log(response.data);
-				this.setState({ rooms: response.data.rooms });
-			})
-			.catch(error => {
-				console.log(error);
 			});
 	}
 	handleInput = e => {
@@ -98,12 +86,7 @@ class Game extends Component {
 			e.target.value = "";
 		}
 	};
-	handleMessages = e => {
-		this.setState({ messageIsOpen: !this.state.messageIsOpen });
-	};
-	handleMessages2 = e => {
-		this.setState({ mapIsOpen: !this.state.mapIsOpen });
-	};
+
 	render() {
 		let {
 			name,
@@ -115,39 +98,11 @@ class Game extends Component {
 			dispatch
 		} = this.state;
 
-		let pos = [[72, 10], [40, 13], [10, 10], [40, 55], [20, 70]];
-		let rooms = this.state.rooms.map((room, i) => {
-			return (
-				<div
-					className="landing__room"
-					style={{ top: `${pos[i][0]}%`, left: `${pos[i][1]}%` }}
-					key={i}
-					data-tip={
-						room.length > 2
-							? `${room[1]}  players: ${room[2]}`
-							: room[1]
-					}
-				>
-					{room[0]}
-					<ReactTooltip />
-				</div>
-			);
-		});
 		return dispatch ? (
 			<Spiner />
 		) : (
 			<div className="game">
-				<button
-					className="btn game__messages--btn"
-					onClick={this.handleMessages2}
-				>
-					{this.state.mapIsOpen ? "close" : "open"}
-				</button>
-
-				{this.state.mapIsOpen ? (
-					<span className="game__map"> {rooms} </span>
-				) : null}
-
+				<Map />
 				<div className="game__center">
 					<div className="game_header">
 						<strong>{name}</strong> : id [ {uuid} ]
