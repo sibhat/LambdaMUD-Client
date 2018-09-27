@@ -4,7 +4,7 @@ import "./login.css";
 
 const Loging = props => {
 	let { header, login, inputHandler, handleSubmit } = props;
-	let { email, password, username } = props.data;
+	let { email, password, username, dispatch } = props.data;
 	return (
 		<div className="login">
 			<div className="login__header">
@@ -50,7 +50,8 @@ const Loging = props => {
 					onChange={inputHandler}
 				/>
 				<button className="btn login__btn" type="submit">
-					Connect
+					<span>Connect</span>
+					{dispatch ? <span className="spinner" /> : null}
 				</button>
 			</form>
 		</div>

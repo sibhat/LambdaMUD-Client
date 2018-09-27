@@ -8,7 +8,8 @@ class index extends Component {
 		this.state = {
 			email: "",
 			password: "",
-			username: ""
+			username: "",
+			dispatch: false
 		};
 	}
 	inputHandler = e => {
@@ -18,7 +19,7 @@ class index extends Component {
 		let { username, email, password } = this.state;
 		// const url = "http://localhost:8800";
 		const url = "https://sibhat-lambdamud.herokuapp.com";
-
+		this.setState({ dispatch: true });
 		axios
 			.post(`${url}/api/${method}/`, {
 				username,
@@ -30,9 +31,11 @@ class index extends Component {
 				localStorage.setItem("key", response.data.key);
 				console.log(response.data);
 				this.props.history.push("/game");
+				this.setState({ dispatch: false });
 			})
 			.catch(error => {
 				console.log({ error });
+				this.setState({ dispatch: false });
 				// this.props.history.push("/auth/");
 			});
 		this.setState({ username: "", email: "", password: "" });
