@@ -18,8 +18,8 @@ class index extends Component {
 	};
 	handleSubmit = method => {
 		let { username, email, password } = this.state;
-		// const url = "http://localhost:8800";
-		const url = "https://sibhat-lambdamud.herokuapp.com";
+		let url = "https://sibhat-lambdamud.herokuapp.com";
+		url = "http://localhost:8800";
 		this.setState({ dispatch: true });
 		axios
 			.post(`${url}/api/${method}/`, {

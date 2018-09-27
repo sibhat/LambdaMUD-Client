@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Pusher from "pusher-js";
+import Spiner from "../layout/Spiner";
 import "./game.css";
 
 class Game extends Component {
@@ -14,12 +15,15 @@ class Game extends Component {
 			players: [],
 			command: "",
 			error_msg: null,
-			message: null
+			message: [],
+			dispatch: true,
+			messageIsOpen: false
 		};
 	}
 	componentDidMount() {
-		// const url = "http://localhost:8800";
-		const url = "https://sibhat-lambdamud.herokuapp.com";
+		let url = "https://sibhat-lambdamud.herokuapp.com";
+		url = "http://127.0.0.1:8800";
+
 		axios
 			.get(`${url}/api/adv/init/`, {
 				headers: {
@@ -27,9 +31,8 @@ class Game extends Component {
 				}
 			})
 			.then(response => {
-				console.log(response.data);
 				let state = response.data;
-				this.setState({ ...state });
+				this.setState({ ...state, dispatch: false });
 				const pusher = new Pusher("c515477a7100fd072337", {
 					cluster: "us2",
 					encrypted: true
@@ -38,19 +41,25 @@ class Game extends Component {
 					`p-channel-${response.data.uuid}`
 				);
 				channel.bind("broadcast", data => {
-					this.setState({ ...data });
+					let message = this.state.message;
+					message.push(data);
+					// console.log(message);
+					this.setState({
+						message
+					});
 				});
 			})
 			.catch(error => {
 				console.log({ error });
+				this.setState({ dispatch: false });
 			});
 	}
 	handleInput = e => {
 		let comand = e.target.value;
 		let data;
 		if (Number(e.charCode) === 13) {
-			// let url = "http://localhost:8800";
 			let url = "https://sibhat-lambdamud.herokuapp.com";
+			url = "http://127.0.0.1:8800";
 			if (comand.length === 1) {
 				url += "/api/adv/move/";
 				data = { direction: comand };
@@ -77,6 +86,9 @@ class Game extends Component {
 			e.target.value = "";
 		}
 	};
+	handleMessages = e => {
+		this.setState({ messageIsOpen: !this.state.messageIsOpen });
+	};
 	render() {
 		let {
 			name,
@@ -85,27 +97,29 @@ class Game extends Component {
 			description,
 			title,
 			players,
-			error_msg
+			error_msg,
+			dispatch
 		} = this.state;
-		return (
+		let messages = message.map((m, i) => <p key={i}>{m.message}</p>);
+		return dispatch ? (
+			<Spiner />
+		) : (
 			<div className="game">
 				<div className="game__center">
 					<div className="game_header">
 						<strong>{name}</strong> : id [ {uuid} ]
 					</div>
 					<div className="game__body">
-						Your location: {title}
-						<br />
-						{description}
-						<br />
-						<br />
-						{message ? <span>New message: {message}</span> : null}
-						<br />
-						<br />
-						players in room: {players}
-						<br />
-						<br />
-						<span>{error_msg}</span>
+						<div className="game__instances">
+							Your location: {title}
+						</div>
+						<div className="game__instances">
+							Room description: {description}
+						</div>
+						<div className="game__instances">
+							players in room: {players}
+						</div>
+						<span className="game__errors">{error_msg}</span>
 					</div>
 					<div className="game__command">
 						<i className="fas fa-angle-double-right" />
@@ -117,6 +131,19 @@ class Game extends Component {
 							placeholder="Enter command"
 						/>
 					</div>
+				</div>
+				<div className="game__messages">
+					<button
+						className="btn game__messages--btn"
+						onClick={this.handleMessages}
+					>
+						{this.state.messageIsOpen && message.length > 0
+							? "close"
+							: "open"}
+					</button>
+					{this.state.messageIsOpen && message.length > 0 ? (
+						<span>message: {messages}</span>
+					) : null}
 				</div>
 			</div>
 		);

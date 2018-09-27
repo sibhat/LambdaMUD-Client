@@ -50,6 +50,16 @@ const Loging = props => {
 					value={password}
 					onChange={inputHandler}
 				/>
+				{login ? null : (
+					<input
+						type="password"
+						name="password"
+						id="password"
+						placeholder="password"
+						value={password}
+						onChange={inputHandler}
+					/>
+				)}
 				<button className="btn login__btn" type="submit">
 					<span>Connect</span>
 					{dispatch ? <span className="spinner" /> : null}
