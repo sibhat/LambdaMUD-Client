@@ -7,7 +7,8 @@ class index extends Component {
 		super(props);
 		this.state = {
 			email: "",
-			password: "",
+			password1: "",
+			password2: "",
 			username: "",
 			dispatch: false,
 			errormsg: null
@@ -17,16 +18,24 @@ class index extends Component {
 		this.setState({ [e.target.name]: e.target.value });
 	};
 	handleSubmit = method => {
-		let { username, email, password } = this.state;
+		let { username, email, password1, password2 } = this.state;
 		let url = "https://sibhat-lambdamud.herokuapp.com";
 		url = "http://localhost:8800";
 		this.setState({ dispatch: true });
+		let data =
+			method == "registration"
+				? {
+						username,
+						email,
+						password1,
+						password2
+				  }
+				: {
+						username,
+						password: password1
+				  };
 		axios
-			.post(`${url}/api/${method}/`, {
-				username,
-				email,
-				password
-			})
+			.post(`${url}/api/${method}/`, data)
 			.then(response => {
 				localStorage.setItem("isLogedin", 1);
 				localStorage.setItem("key", response.data.key);

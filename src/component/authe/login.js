@@ -4,7 +4,14 @@ import "./login.css";
 
 const Loging = props => {
 	let { header, login, inputHandler, handleSubmit } = props;
-	let { email, password, username, dispatch, errormsg } = props.data;
+	let {
+		email,
+		password1,
+		password2,
+		username,
+		dispatch,
+		errormsg
+	} = props.data;
 	return (
 		<div className="login">
 			<div className="login__header">
@@ -44,19 +51,17 @@ const Loging = props => {
 				)}
 				<input
 					type="password"
-					name="password"
-					id="password"
+					name="password1"
 					placeholder="password"
-					value={password}
+					value={password1}
 					onChange={inputHandler}
 				/>
 				{login ? null : (
 					<input
 						type="password"
-						name="password"
-						id="password"
+						name="password2"
 						placeholder="password"
-						value={password}
+						value={password2}
 						onChange={inputHandler}
 					/>
 				)}
