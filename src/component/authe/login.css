@@ -55,7 +55,6 @@
 }
 
 .spinner:before {
-	/* display: none; */
 	content: "";
 	box-sizing: border-box;
 	position: absolute;

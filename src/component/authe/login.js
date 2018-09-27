@@ -16,7 +16,7 @@ const Loging = props => {
 					{login ? "Register" : "Login"}
 				</Link>
 			</div>
-			<span className="login__error">{errormsg}</span>
+			{errormsg ? <span className="login__error">{errormsg}</span> : null}
 			<form
 				className="login__body"
 				onSubmit={e => {
