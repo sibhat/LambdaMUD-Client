@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Pusher from "pusher-js";
+import Messages from "./Messages";
 import Spiner from "../layout/Spiner";
 import "./game.css";
 import ReactTooltip from "react-tooltip";
@@ -35,22 +35,8 @@ class Game extends Component {
 			})
 			.then(response => {
 				let state = response.data;
+				console.log(state);
 				this.setState({ ...state, dispatch: false });
-				const pusher = new Pusher("c515477a7100fd072337", {
-					cluster: "us2",
-					encrypted: true
-				});
-				const channel = pusher.subscribe(
-					`p-channel-${response.data.uuid}`
-				);
-				channel.bind("broadcast", data => {
-					let message = this.state.message;
-					message.push(data);
-					console.log(message);
-					this.setState({
-						message
-					});
-				});
 			})
 			.catch(error => {
 				console.log({ error });
@@ -122,14 +108,13 @@ class Game extends Component {
 		let {
 			name,
 			uuid,
-			message,
 			description,
 			title,
 			players,
 			error_msg,
 			dispatch
 		} = this.state;
-		let messages = message.map((m, i) => <p key={i}>{m.message}</p>);
+
 		let pos = [[72, 10], [40, 13], [10, 10], [40, 55], [20, 70]];
 		let rooms = this.state.rooms.map((room, i) => {
 			return (
@@ -156,9 +141,7 @@ class Game extends Component {
 					className="btn game__messages--btn"
 					onClick={this.handleMessages2}
 				>
-					{this.state.mapIsOpen && message.length > 0
-						? "close"
-						: "open"}
+					{this.state.mapIsOpen ? "close" : "open"}
 				</button>
 
 				{this.state.mapIsOpen ? (
@@ -192,19 +175,7 @@ class Game extends Component {
 						/>
 					</div>
 				</div>
-				<div className="game__messages">
-					<button
-						className="btn game__messages--btn"
-						onClick={this.handleMessages}
-					>
-						{this.state.messageIsOpen && message.length > 0
-							? "close"
-							: "open"}
-					</button>
-					{this.state.messageIsOpen && message.length > 0 ? (
-						<span>message: {messages}</span>
-					) : null}
-				</div>
+				<Messages uuid={uuid} />
 			</div>
 		);
 	}
